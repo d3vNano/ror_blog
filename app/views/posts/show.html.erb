@@ -1,2 +1,25 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/show.html.erb</p>
+<h1><%= @post.title %></h1>
+
+<p>Publicado por: <% @post.user.try(:username) %></p>
+
+<p><% @post.body %></p>
+
+<h2>Comentários</h2>
+
+    <% if @post.comments.present? %>
+        <ul>
+            <% @post.comments.each do |comment| %>
+                <li>
+                    <%= comment.content %> (por <%= comment.user.try(:username) %>)
+                </li>
+            <% end %>
+        </ul>
+    <% else %>
+        <p>Seja o primeiro a comentar!</p>
+    <% end %>
+
+<h3>Deixe seu comentário</h3>
+    <%= form_tag post_comments_path(@post), method: :post do %>
+        <%= text_field_tag :content, '', placeholder: 'Digite seu comentário' %>
+        <%= submit_tag "Comentar", class: 'btn btn-primary' %>
+    <% end %>
